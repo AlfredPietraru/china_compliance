@@ -1,0 +1,7 @@
+semantic-kernel
+python-dotenv
+chromadb
+pypdf>=3.0.0
+pdfplumber
+tqdm
+python-multipart
