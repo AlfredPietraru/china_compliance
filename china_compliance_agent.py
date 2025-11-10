@@ -169,17 +169,31 @@ class ChinaComplianceAgent:
         except Exception as e:
             return f"Error retrieving regulatory context: {str(e)}"
         
+    # def create_system_prompt(self, product_context : Dict[str, Any], regulatory_context : str) -> str:
+    #     with open("system_prompt.txt", "r") as f:
+    #         prompt = f.read()
+    #         prompt = prompt.replace("{product_context}", json.dumps(product_context))
+    #         prompt = prompt.replace("{regulatory_context}", json.dumps(regulatory_context))
+    #         with open("zzz.txt", "w") as ff:
+    #             ff.write(prompt)
+    #         return prompt
+  
+
     def create_system_prompt(self, product_context : Dict[str, Any], regulatory_context : str) -> str:
-        with open("system_prompt.txt", "r") as f:
-            prompt = f.read()
-            prompt.replace("{product_context}", json.dumps(product_context))
-            prompt.replace("{regulatory_context}", json.dumps(regulatory_context))
-            return prompt
-        # poml_params = poml.poml("system_prompt.poml", context={
-        #     "product_context" : product_context,
-        #     "regulatory_context" : regulatory_context,
-        # }, format="openai_chat")
-        # return poml_params.get("messages", [{}])[0].get("content", "")
+        poml_params = poml.poml(
+        "system_prompt.poml",
+            context={
+                "product_context": product_context,
+                "regulatory_context": regulatory_context,
+            },
+            format="openai_chat"
+        )
+    
+        # Extract the first system message content
+        messages = poml_params.get("messages", [])
+        if messages:
+            return messages[0].get("content", "")
+        return ""
 
     async def generate_compliance_assessment(self, product_context: Dict[str, Any], question: str, regulatory_context: str) -> dict:
         """Generate compliance assessment using AI"""
@@ -343,7 +357,8 @@ async def main():
     _, updated_context = await compliance_agent.process_input(user_answers, sample_context)
     print(updated_context.get("overall_status"), end="\n\n")
     print(updated_context.get("conversational_response"), end="\n\n")
-    print(updated_context.get("summary")) 
+    for phrase in updated_context.get("summary"):
+        print(phrase) 
 
 
 if __name__ == "__main__":
