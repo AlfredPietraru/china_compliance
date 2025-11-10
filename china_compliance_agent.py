@@ -277,13 +277,14 @@ class ChinaComplianceAgent:
                 'conversational_response': compliance_answer.get("question_text"),
                 'summary': compliance_answer.get('compliance_assessment')
             }
-            
+            # 
             # Update context with compliance assessment
             updated_context = {
                 **context,
                 'compliance_assessment': compliance_assessment,
                 'overall_status': compliance_assessment.get('overall_status', "CHECKED_FAILED"),
-                'conversational_response': compliance_assessment.get('conversational_response', "")
+                'conversational_response': compliance_assessment.get('conversational_response', ""),
+                'summary': compliance_assessment.get('summary', "")
             }
             
             # Add response to conversation history
@@ -307,7 +308,6 @@ class ChinaComplianceAgent:
 
 async def main():
     compliance_agent = ChinaComplianceAgent()
-    result = await compliance_agent.initialize_services()
     sample_context = {
         'project_name': 'Nescafé Gold Blend European Launch',
         'market_selections': ["China Market"],
@@ -341,9 +341,9 @@ async def main():
     }
     
     _, updated_context = await compliance_agent.process_input(user_answers, sample_context)
-    print(updated_context.get("compliance_status"), end="\n\n")
+    print(updated_context.get("overall_status"), end="\n\n")
     print(updated_context.get("conversational_response"), end="\n\n")
-    print(updated_context.get("compliance_assessment")) 
+    print(updated_context.get("summary")) 
 
 
 if __name__ == "__main__":
