@@ -53,27 +53,6 @@ def get_default_model_parameters() -> Dict[str, Any]:
         "top_p": 0.5
     }
 
-def create_search_arguments_structure(ingredients_str: str, allergens_str: str, 
-                                    user_input: str, rag_settings: Dict[str, Any] = None) -> KernelArguments:
-    """Create search arguments for RAG queries"""
-    if rag_settings is None:
-        rag_settings = get_default_rag_settings()
-        
-    rag_query_text = (
-        f"Ingredients: {ingredients_str}. "
-        f"Declared Allergens: {allergens_str}. "
-        f"User query: {user_input}"
-    )
-    
-    # Configure vector search parameters
-    search_arguments = KernelArguments(
-        query=rag_query_text,
-        limit=rag_settings.get("max_retrieved_chunks", 5),
-        min_relevance=rag_settings.get("min_relevance_score", 0.7),
-    )
-    
-    return search_arguments
-
 def create_chroma_store_collection( embedding_service_instance : AzureTextEmbedding, 
                                    rag_settings) -> tuple[ChromaStore, ChromaCollection[str, PdfChunk]]: 
 
@@ -261,39 +240,9 @@ def prepare_product_context(context: Dict[str, Any]) -> Dict[str, Any]:
     """Prepare product context for compliance checking from workflow context"""
     return {
         'product_name': context.get('project_name', 'Unknown Product'),
-        'ingredients': context.get('ingredients', []),
-        'allergens': context.get('allergens', []),
         'markets': context.get('market_selections', []),
         'brands': context.get('brand_selections', []),
         'skus': context.get('sku_selections', []),
         'changes': context.get('change_description', ''),
         'success_criteria': context.get('success_criteria', [])
     }
-
-def extract_compliance_status(compliance_answer: str) -> str:
-    """Extract overall compliance status from the AI response"""
-    if 'Overall Status: COMPLIANT' in compliance_answer:
-        return 'COMPLIANT'
-    elif 'Overall Status: NON-COMPLIANT' in compliance_answer:
-        return 'NON-COMPLIANT'
-    elif 'Overall Status: UNKNOWN_COMPLIANCE_STATUS' in compliance_answer:
-        return 'UNKNOWN_COMPLIANCE_STATUS'
-    else:
-        # Try to infer from the content
-        if 'COMPLIANT' in compliance_answer.upper():
-            return 'COMPLIANT'
-        elif 'NON-COMPLIANT' in compliance_answer.upper():
-            return 'NON-COMPLIANT'
-        else:
-            return 'UNKNOWN_COMPLIANCE_STATUS'
-        
-def extract_summary(compliance_answer: str) -> str:
-    """Extract a summary from the compliance answer"""
-    # Take the first few sentences as summary
-    sentences = compliance_answer.split('.')
-    if len(sentences) > 0:
-        summary = sentences[0].strip()
-        if len(summary) > 100:
-            summary = summary[:97] + "..."
-        return summary
-    return "Compliance assessment completed"
