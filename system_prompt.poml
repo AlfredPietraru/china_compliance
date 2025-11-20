@@ -26,6 +26,8 @@
     </list>
   </task>
 
+  <task caption="Task 3">Gather as much information as possible about the user request according to the regulatory context</task> 
+
   <cp caption="Context">
     The user is a marketing or business professional planning a consumer promotion.
     They need to ensure their campaign complies with relevant regulations to avoid legal penalties, reputational damage, and consumer mistrust.

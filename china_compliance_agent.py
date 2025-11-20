@@ -55,19 +55,26 @@ class ChinaComplianceAgent:
         # Keep only last 10 messages to avoid memory issues
         if len(self.conversation_history) > 10:
             self.conversation_history = self.conversation_history[-10:]
+    
+    def is_satisfied(self, context):
+        """Check if compliance requirements are satisfied"""
+        compliance_assessment = context.get('compliance_assessment', {})
+        overall_status = compliance_assessment.get('overall_status', '')
+        return overall_status in ['CHECKED', 'INVALID']
+
 
     async def initialize_services(self):
         settings = AppSettings()
         """Initialize the semantic kernel and compliance services"""
         if self.initialized:
             return True
-            
+
         try:
             # Check if we have the required environment variables
             if not settings.azure_openai_api_key or not settings.azure_openai_endpoint:
                 print("Missing Azure OpenAI credentials in environment variables")
                 return False
-            
+
             headers =  {
                     "client_id": settings.nesgen_client_id,
                     "client_secret": settings.nesgen_client_secret,
@@ -202,6 +209,7 @@ class ChinaComplianceAgent:
                 return "Compliance service not available."
             
             # Create system prompt
+
             system_prompt = self.create_system_prompt(product_context, regulatory_context)
             # Create chat history
             chat_history = ChatHistory()
@@ -212,7 +220,7 @@ class ChinaComplianceAgent:
             response_object = await self.chat_completion_service.get_chat_message_contents(
                 chat_history=chat_history,
                 settings=self.chat_settings
-            )             
+            )      
             try:
                 json_output = json.loads(response_object[0].content)
                 # Ensure required keys exist
@@ -237,7 +245,8 @@ class ChinaComplianceAgent:
                 ],
                 "overall_status" : "CHECK_FAILED",
                 "question_text" : "",
-            }     
+            }
+        
 
     async def process_input(self, user_input, context):
         """Process user input for regulatory compliance"""
@@ -312,12 +321,75 @@ class ChinaComplianceAgent:
                 **context,
                 'error': error_msg
             }
+        
+    async def continous_conversation_processing(self, context):
+        try:
+            # Initialize services if not already done
+            if not await self.initialize_services():
+                return self.step_name, {
+                    **context,
+                    'error': 'Compliance services not available. Please check configuration.'
+                }
+            regulatory_context = await self.retrieve_regulatory_context(context, "Give me a list with all the regulations for promotions")
+            system_prompt = self.create_system_prompt(context, regulatory_context)
+            chat_history = ChatHistory()
+            chat_history.add_system_message(system_prompt)
+            idx = 0
+            while True:
+                question = self.get_next_question_from_user(idx)
+                idx += 1
+                chat_history.add_user_message(question)
+                response_object = await self.chat_completion_service.get_chat_message_contents(
+                    chat_history=chat_history,
+                    settings=self.chat_settings
+                )
+                llm_reply = response_object[0].content
+                chat_history.add_assistant_message(llm_reply)
+        except Exception as e:
+            error_msg = f"Error processing compliance request: {str(e)}"
+            self.add_to_conversation_history(f"System Error: {error_msg}")
+            return self.step_name, {
+                **context,
+                'error': error_msg
+            }
 
-    def is_satisfied(self, context):
-        """Check if compliance requirements are satisfied"""
-        compliance_assessment = context.get('compliance_assessment', {})
-        overall_status = compliance_assessment.get('overall_status', '')
-        return overall_status in ['CHECKED', 'INVALID']
+    def get_next_question_from_user(self, idx):
+        question_list = [
+            """
+            I want to add a promotional element to the side flap with following details and a QR code of the website
+            "During the event period, users who purchase event products and use WeChat's "Scan" function to scan the QR code on the product packaging can participate in the event and have a chance to win the following prizes:
+            First Prize:
+            Apple iPhone 14 Pro Max (Full Netcom 5G version, 512GB), market reference price: ¥11,000.
+            Number of winners: 20.
+            Second Prize:
+            500 yuan JD.com e-gift card, market reference price: ¥500.
+            Number of winners: 1,000.
+            Third Prize:
+            Xiaomi NFC wristband, market reference price: ¥249.
+            Number of winners: 2,000.z
+            Fourth Prize:
+            Tencent Video, Mango TV, Bilibili membership discount coupons.
+            Number of winners: 2,000,000.
+            (Coupons will be displayed in the event page after winning.)
+            Fifth Prize:
+            Points for small treasure boxes, unlimited quantity. 
+            Event Period: 
+            From August 15, 2023, to December 31, 2024, 24:00.""",
+            "www.xyz.com",
+            """
+            Yes, I want to add another promotional element on the front of the pack which says 
+            "New Upgrade!!
+            Scan the code on the box for a chance to win Grand Prize worth 10,000 yuan" 
+            """,
+            """
+            Yes, I want to add another QR code, this will be unique to each product within each SKU units and brand. 
+            """,
+            """
+            Yes, I want to add another QR code, this will be unique to each product within each SKU units and brand. 
+            """,
+            "No"
+        ]
+        return question_list[idx]
 
 
 async def main():
@@ -330,35 +402,11 @@ async def main():
         'change_description': """Renovation requrires GTIN changes, however since it is not seen as a new product this will be classified as a Normal project with no GTIN change""",
         'success_criteria': ['Ensure regulatory compliance'],
     }
-    user_answers = {
-    "action": "assess_compliance",
-    "text": """
-        I want to add a promotional element to the side flap with following details and a QR code of the website
-        "During the event period, users who purchase event products and use WeChat's "Scan" function to scan the QR code on the product packaging can participate in the event and have a chance to win the following prizes:
-        First Prize:
-        Apple iPhone 14 Pro Max (Full Netcom 5G version, 512GB), market reference price: ¥11,000.
-        Number of winners: 20.
-        Second Prize:
-        500 yuan JD.com e-gift card, market reference price: ¥500.
-        Number of winners: 1,000.
-        Third Prize:
-        Xiaomi NFC wristband, market reference price: ¥249.
-        Number of winners: 2,000.
-        Fourth Prize:
-        Tencent Video, Mango TV, Bilibili membership discount coupons.
-        Number of winners: 2,000,000.
-        (Coupons will be displayed in the event page after winning.)
-        Fifth Prize:
-        Points for small treasure boxes, unlimited quantity. 
-        Event Period: 
-        From August 15, 2023, to December 31, 2024, 24:00.""", 
-    }
-    
-    _, updated_context = await compliance_agent.process_input(user_answers, sample_context)
-    print(updated_context.get("overall_status"), end="\n\n")
-    print(updated_context.get("conversational_response"), end="\n\n")
-    for phrase in updated_context.get("summary"):
-        print(phrase) 
+    compliance_agent.continous_conversation_processing(sample_context)
+    # agent.load_state({})
+    # agent.communicates()
+    # agent.return_state({})
+
 
 
 if __name__ == "__main__":
