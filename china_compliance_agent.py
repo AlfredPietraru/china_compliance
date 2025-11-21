@@ -321,6 +321,19 @@ class ChinaComplianceAgent:
                 **context,
                 'error': error_msg
             }
+    
+    def get_system_prompt_info_gathering(self, product_context : Dict[str, Any]):
+        poml_params = poml.poml(
+        "system_prompt_info_gathering.poml",
+            context={
+                "product_context": product_context,
+            },
+            format="openai_chat"
+        )
+        messages = poml_params.get("messages", [])
+        if messages:
+            return messages[0].get("content", "")
+        return ""
         
     async def continous_conversation_processing(self, context):
         try:
@@ -330,13 +343,14 @@ class ChinaComplianceAgent:
                     **context,
                     'error': 'Compliance services not available. Please check configuration.'
                 }
-            regulatory_context = await self.retrieve_regulatory_context(context, "Give me a list with all the regulations for promotions")
-            system_prompt = self.create_system_prompt(context, regulatory_context)
+            system_prompt_info_gathering = self.get_system_prompt_info_gathering(context)
             chat_history = ChatHistory()
-            chat_history.add_system_message(system_prompt)
+            chat_history.add_system_message(system_prompt_info_gathering)
             idx = 0
             while True:
-                question = self.get_next_question_from_user(idx)
+                input("Press Enter to continue...")
+                question = await self.get_next_question_from_user(idx)
+                if question == None: return "YEIIIII"
                 idx += 1
                 chat_history.add_user_message(question)
                 response_object = await self.chat_completion_service.get_chat_message_contents(
@@ -345,6 +359,8 @@ class ChinaComplianceAgent:
                 )
                 llm_reply = response_object[0].content
                 chat_history.add_assistant_message(llm_reply)
+                print(llm_reply)
+                print(end="\n\n")
         except Exception as e:
             error_msg = f"Error processing compliance request: {str(e)}"
             self.add_to_conversation_history(f"System Error: {error_msg}")
@@ -353,7 +369,7 @@ class ChinaComplianceAgent:
                 'error': error_msg
             }
 
-    def get_next_question_from_user(self, idx):
+    async def get_next_question_from_user(self, idx):
         question_list = [
             """
             I want to add a promotional element to the side flap with following details and a QR code of the website
@@ -389,6 +405,7 @@ class ChinaComplianceAgent:
             """,
             "No"
         ]
+        if idx >= len(question_list): return None
         return question_list[idx]
 
 
@@ -402,7 +419,7 @@ async def main():
         'change_description': """Renovation requrires GTIN changes, however since it is not seen as a new product this will be classified as a Normal project with no GTIN change""",
         'success_criteria': ['Ensure regulatory compliance'],
     }
-    compliance_agent.continous_conversation_processing(sample_context)
+    result = await compliance_agent.continous_conversation_processing(sample_context)
     # agent.load_state({})
     # agent.communicates()
     # agent.return_state({})
