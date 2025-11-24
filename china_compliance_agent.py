@@ -368,6 +368,7 @@ class ChinaComplianceAgent:
                 **context,
                 'error': error_msg
             }
+        
 
     async def get_next_question_from_user(self, idx):
         question_list = [

@@ -97,6 +97,10 @@ class RequirementsGatheringAgent:
         if messages:
             return messages[0].get("content", "")
         return ""
+    
+    def _should_conversation_continue(self, decision : str):
+        if decision == "STOP": return False
+        return True
 
     async def gather_context_information(self, product_context : Dict[str, Any], context : Dict[str, Any],
                                           inputs : list[str]):
@@ -109,23 +113,25 @@ class RequirementsGatheringAgent:
                 }
             chat_history = ChatHistory()
             chat_history.add_system_message(system_prompt)
-            for input in inputs:
-                chat_history.add_user_message(input)
-                response_object = await self.chat_completion_service.get_chat_message_contents(
-                    chat_history=chat_history,
-                    settings=self.chat_settings
-                )
-                chat_history.add_assistant_message(response_object[0].content)
-                llm_response =  response_object[0].content
-                try: 
-                    json_response = json.loads(llm_response)
-                    print(json_response.keys())
-                    print(json_response.get("status"))
-                    print(json_response.get("question"))
-                    print(json_response.get("promotion_context"))
-                    print("\n\n\n")
-                except:
-                    "THIS IS NOT A JSON WHYYYYYY?????"
+            decision = "CONTINUE"
+            nr_replies = 0
+            while (self._should_conversation_continue(decision) and nr_replies < len(inputs)):
+                    chat_history.add_user_message(inputs[nr_replies])
+                    response_object = await self.chat_completion_service.get_chat_message_contents(
+                        chat_history=chat_history,
+                        settings=self.chat_settings
+                    )
+                    chat_history.add_assistant_message(response_object[0].content)
+                    llm_response =  response_object[0].content
+                    try: 
+                        json_response = json.loads(llm_response)
+                        decision = json_response.get("status")
+                        print(json_response.get("question"))
+                        print(json_response.get("context"))
+                        print("\n\n\n")
+                    except:
+                        decision = "STOP"
+                        "THIS IS NOT A JSON WHYYYYYY?????"
             return chat_history.messages[-1].content
 
         except Exception as e:

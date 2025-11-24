@@ -7,16 +7,16 @@
   </role>
 
   <task caption="Extract Promotion Information">
-    From the user's messages, extract all relevant information to populate the promotion JSON.
+    From the user's messages, extract all relevant information to populate the promotion context JSON.
     Do not invent values; if a field is not provided, leave it as None.
-    Always return the updated context JSON.
+    Always return the updated context under the key 'context'.
   </task>
 
   <task caption="Check Completion">
     Determine if the user has finished providing promotion information.
-    If the user indicates they are done (e.g., "No more", "Done", "That's all"), set status to STOP and provide a confirmation message in question: "All information collected. Thank you!".
-    Otherwise, set status to CONTINUE and provide a follow-up question asking for missing fields or additional details.
-    Never modify context values other than status/question.
+    If the user indicates they are done (e.g., "No more", "Done", "That's all"), set 'status' to STOP and provide a confirmation message in 'question': "All information collected. Thank you!".
+    Otherwise, set 'status' to CONTINUE and provide a follow-up question asking for missing fields or additional details.
+    Do not modify the promotion context values; only update 'status' and 'question'.
   </task>
 
   <cp caption="Context">
@@ -24,35 +24,71 @@
     - Product context: {{product_context}}
     - Current promotion context: {{promotion_context}}
     Your role is to gather information thoroughly and accurately without inventing values.
+    All promotion-related fields must be returned inside the 'context' object.
   </cp>
 
   <output>
     Return a JSON object containing:
     1. status: "CONTINUE" or "STOP"
     2. question: follow-up question if CONTINUE, confirmation if STOP
-    3. context: updated promotion context JSON
+    3. context: updated promotion context JSON nested under 'context'
 
-    <output-schema parser="json">
-      {
+<output-schema parser="json">
+  {
+    "type": "object",
+    "properties": {
+      "status": {
+        "type": "string",
+        "enum": ["CONTINUE", "STOP"],
+        "description": "CONTINUE if gathering should continue, STOP if the user indicated they are done"
+      },
+      "question": {
+        "type": "string",
+        "description": "Next question to ask the user if CONTINUE, or confirmation message if STOP"
+      },
+      "context": {
         "type": "object",
+        "description": "Promotion context object containing all promotion fields",
         "properties": {
-          "status": {
-            "type": "string",
-            "enum": ["CONTINUE", "STOP"],
-            "description": "CONTINUE if gathering should continue, STOP if the user indicated they are done"
-          },
-          "question": {
-            "type": "string",
-            "description": "Next question to ask the user if CONTINUE, or confirmation message if STOP"
-          },
-          "context": {
-            "type": "object",
-            "description": "Updated promotion context JSON containing all fields collected so far"
-          }
+          "promotion_type": {"type": ["string", "null"]},
+          "applicable_products": {"type": ["string", "null"]},
+          "participation_conditions": {"type": ["string", "null"]},
+          "prizes": {"type": ["array", "null"]},
+          "prizez_number_of_winners": {"type": ["string", "null"]},
+          "draw_method": {"type": ["string", "null"]},
+          "draw_time": {"type": ["string", "null"]},
+          "duration": {"type": ["object", "null"]},
+          "promotion_rules_link": {"type": ["string", "null"]},
+          "promotion_qr_code": {"type": ["array", "null"]},
+          "personal_information_consent": {"type": ["string", "null"]},
+          "reference_price": {"type": ["string", "null"]},
+          "discount_amount": {"type": ["string", "null"]},
+          "redemption_method": {"type": ["string", "null"]},
+          "other_restrictions": {"type": ["string", "null"]}
         },
-        "required": ["status", "question", "context"],
-        "additionalProperties": false
+        "required": [
+          "promotion_type",
+          "applicable_products",
+          "participation_conditions",
+          "prizes",
+          "prizez_number_of_winners",
+          "draw_method",
+          "draw_time",
+          "duration",
+          "promotion_rules_link",
+          "promotion_qr_code",
+          "personal_information_consent",
+          "reference_price",
+          "discount_amount",
+          "redemption_method",
+          "other_restrictions"
+        ]
       }
-    </output-schema>
+    },
+    "required": ["status", "question", "context"],
+    "additionalProperties": false
+  }
+</output-schema>
+
   </output>
 </poml>
