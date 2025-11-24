@@ -115,9 +115,17 @@ class RequirementsGatheringAgent:
                     chat_history=chat_history,
                     settings=self.chat_settings
                 )
-                llm_reply = response_object[0].content
-                chat_history.add_assistant_message(llm_reply)
-                print(llm_reply, end="\n\n\n")
+                chat_history.add_assistant_message(response_object[0].content)
+                llm_response =  response_object[0].content
+                try: 
+                    json_response = json.loads(llm_response)
+                    print(json_response.keys())
+                    print(json_response.get("status"))
+                    print(json_response.get("question"))
+                    print(json_response.get("promotion_context"))
+                    print("\n\n\n")
+                except:
+                    "THIS IS NOT A JSON WHYYYYYY?????"
             return chat_history.messages[-1].content
 
         except Exception as e:
@@ -127,23 +135,12 @@ class RequirementsGatheringAgent:
                 **context,
                 'error': error_msg
             }
-        return context
 
-import os
-import json         
+from utils_requirements_gathering_agent import (
+    read_dataset,
+    compare_contexts
+)
 
-def read_dataset():
-    train_data_path = [os.path.join("dataset/inputs", filename) for filename in os.listdir("dataset/inputs")]
-    result_data_path = [os.path.join("dataset/results", filename) for filename in os.listdir("dataset/results")]
-    train_data = []
-    result_data = []
-    for txt, result in zip(train_data_path, result_data_path):
-        with open(txt, "r") as f:
-            train_data.append(json.loads(f.read()))
-        with open(result, "r") as f:
-            result_data.append(json.loads(f.read()))
-        break
-    return train_data, result_data
 
 async def main():
     requirementsGatheringAgent = RequirementsGatheringAgent()
@@ -178,11 +175,10 @@ async def main():
     }
 
     train_data, results = read_dataset()
-    inputs = [obj.get("content") for obj in train_data[0]["conversation"]]
-    print(len(inputs))
-    context = await requirementsGatheringAgent.gather_context_information(sample_context, context, inputs)
-    print(context)
-
+    for (train_conv, result) in zip(train_data, results):
+        llm_context = await requirementsGatheringAgent.gather_context_information(sample_context, context, train_conv)
+        groundtruth_context = result.get("context")
+        print(compare_contexts(groundtruth_context, json.loads(llm_context)))
 
 if __name__ == "__main__":
     asyncio.run(main())
