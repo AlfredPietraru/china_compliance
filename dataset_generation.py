@@ -111,8 +111,11 @@ async def main():
         min_relevance=0.7
     ))
 
-    retrieved_context = str(raw_search_result)
+    # retrieved_context = str(raw_search_result)
     # retrieved_context = extract_text_from_pdf("documents/regulations_chinese.pdf")
+    retrieved_context = None
+    with open("translated_context.txt", "r") as f:
+        retrieved_context = f.read()
 
     chat_history = ChatHistory()
     with open("conversation_generation_prompt.txt", "r") as f:
@@ -122,12 +125,12 @@ async def main():
         chat_history.add_system_message(sys_prompt)
 
     CATEGORY_PROMPTS = {
-        "CHECKED": "Generate a conversation where the user provides enough valid information according to regulation_context",
-        "INVALID": "Generate a conversation where the user violates compliance rules according to regulation_context.",
-        "CHECK_FAILED": "Generate a conversation with insufficient information according to regulation_context"
+        "CHECKED": "Create an example where the marketing manager provides complete campaign details that align with all regulatory requirements.",
+        "INVALID": "Create an example where the marketing manager unknowingly overlooks a compliance requirement in their campaign planning.",   
+        "CHECK_FAILED": "Create an example where the marketing manager hasn't yet provided all the necessary campaign information."
     }
-    right_key = "CHECK_FAILED"
-    idx = 14
+    right_key = "CHECKED"
+    idx = 4
     chat_history.add_user_message(CATEGORY_PROMPTS[right_key])
     response_object = await chat_completion_service.get_chat_message_contents(
         chat_history=chat_history,
