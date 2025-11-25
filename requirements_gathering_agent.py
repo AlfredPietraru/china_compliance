@@ -114,9 +114,11 @@ class RequirementsGatheringAgent:
             chat_history = ChatHistory()
             chat_history.add_system_message(system_prompt)
             decision = "CONTINUE"
-            nr_replies = 0
-            while (self._should_conversation_continue(decision) and nr_replies < len(inputs)):
-                    chat_history.add_user_message(inputs[nr_replies])
+            for input in inputs:
+                    print(input)
+                    if not self._should_conversation_continue(decision):
+                        break
+                    chat_history.add_user_message(input) 
                     response_object = await self.chat_completion_service.get_chat_message_contents(
                         chat_history=chat_history,
                         settings=self.chat_settings
@@ -126,12 +128,13 @@ class RequirementsGatheringAgent:
                     try: 
                         json_response = json.loads(llm_response)
                         decision = json_response.get("status")
-                        print(json_response.get("question"))
-                        print(json_response.get("context"))
-                        print("\n\n\n")
+                        print(json_response.get("question"), end="\n\n")
+                        # print(json_response.get("context"))
+                        # print("\n\n\n")
+                        
                     except:
                         decision = "STOP"
-                        "THIS IS NOT A JSON WHYYYYYY?????"
+                        print("THIS IS NOT A JSON WHYYYYYY?????")
             return chat_history.messages[-1].content
 
         except Exception as e:
@@ -182,9 +185,13 @@ async def main():
 
     train_data, results = read_dataset()
     for (train_conv, result) in zip(train_data, results):
-        llm_context = await requirementsGatheringAgent.gather_context_information(sample_context, context, train_conv)
+        llm_response = await requirementsGatheringAgent.gather_context_information(sample_context, context, train_conv)
         groundtruth_context = result.get("context")
-        print(compare_contexts(groundtruth_context, json.loads(llm_context)))
+        llm_context =  json.loads(llm_response).get("context")
+        print(llm_context)
+        print("\n\n\n")
+        _, summary = compare_contexts(groundtruth_context, llm_context)
+        print(summary)
 
 if __name__ == "__main__":
     asyncio.run(main())

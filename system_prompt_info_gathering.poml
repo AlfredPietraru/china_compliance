@@ -16,7 +16,9 @@
     Determine if the user has finished providing promotion information.
     If the user indicates they are done (e.g., "No more", "Done", "That's all"), set 'status' to STOP and provide a confirmation message in 'question': "All information collected. Thank you!".
     Otherwise, set 'status' to CONTINUE and provide a follow-up question asking for missing fields or additional details.
-    Do not modify the promotion context values; only update 'status' and 'question'.
+    For follow-ups, ask a simple, friendly question such as:
+        "Do you have any other details to add about the promotion?"
+    Do not repeat the full list of fields each time.
   </task>
 
   <cp caption="Context">
@@ -54,15 +56,12 @@
           "applicable_products": {"type": ["string", "null"]},
           "participation_conditions": {"type": ["string", "null"]},
           "prizes": {"type": ["array", "null"]},
-          "prizez_number_of_winners": {"type": ["string", "null"]},
           "draw_method": {"type": ["string", "null"]},
           "draw_time": {"type": ["string", "null"]},
           "duration": {"type": ["object", "null"]},
           "promotion_rules_link": {"type": ["string", "null"]},
           "promotion_qr_code": {"type": ["array", "null"]},
           "personal_information_consent": {"type": ["string", "null"]},
-          "reference_price": {"type": ["string", "null"]},
-          "discount_amount": {"type": ["string", "null"]},
           "redemption_method": {"type": ["string", "null"]},
           "other_restrictions": {"type": ["string", "null"]}
         },
@@ -71,15 +70,12 @@
           "applicable_products",
           "participation_conditions",
           "prizes",
-          "prizez_number_of_winners",
           "draw_method",
           "draw_time",
           "duration",
           "promotion_rules_link",
           "promotion_qr_code",
           "personal_information_consent",
-          "reference_price",
-          "discount_amount",
           "redemption_method",
           "other_restrictions"
         ]
