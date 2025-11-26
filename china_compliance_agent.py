@@ -181,7 +181,7 @@ class ChinaComplianceAgent:
     #         prompt = f.read()
     #         prompt = prompt.replace("{product_context}", json.dumps(product_context))
     #         prompt = prompt.replace("{regulatory_context}", json.dumps(regulatory_context))
-    #         with open("zzz.txt", "w") as ff:
+    #         with open("zzz.txt", "w") as f:
     #             ff.write(prompt)
     #         return prompt
   

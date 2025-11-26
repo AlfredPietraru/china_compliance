@@ -1,0 +1,104 @@
+**Nestlé China Promotional Activities Compliance Guidelines (July 2022 Edition)**
+
+**Scope of Application**
+- Applies to all operating locations in mainland China, including Nestlé (China) Ltd. Beijing headquarters, all operating companies, R&D centers, all branches, and future legal entities and their branches.
+- Also applies to China Specialty Business (CSB) and Wyeth Infant Nutrition Business.
+
+**Legal Basis**
+- Promotional activities must comply with the Consumer Rights Protection Law, Anti-Unfair Competition Law, Price Law, and Advertising Law.
+- Must also comply with departmental regulations such as the Interim Provisions on Regulating Promotional Activities and the Provisions on Clearly Marked Prices and Prohibition of Price Fraud.
+
+**Types of Promotional Activities**
+
+**Prize Sales** 
+- *Lottery-type Prize Sales*: (class name: LOTTERY)  Use methods with randomness or uncertainty (e.g., drawing lots, lottery numbers, games) to determine whether consumers win prizes.
+  - Example: Printing prize sales activity rules on product packaging; consumers scan a QR code to learn about the activity before purchase, and after purchase, scan an internal QR code to participate in the lottery.
+  - Example: Inviting consumers (purchase not required) to scan a QR code to participate in a lottery for traffic or click rate purposes.
+- *Gift-type Prize Sales*: (class name: GIFT) Provide bonuses, goods, or other benefits to consumers who meet certain conditions.
+  - Example: Within a fixed time, give products or points to consumers who purchase a certain amount; or only a fixed quantity of products or points are given to consumers who purchase products.
+  - Example: Consumers (purchase not required) follow a public account or download a mini-program to receive bonuses, goods, vouchers, points, redemption coupons, etc.
+
+**Price Promotions** (class name: PRICE_PROMOTIONS)
+- *Price Comparison*: "Strikethrough price" is a typical method, showing the current sales price next to a crossed-out price to attract consumers.
+- *Price Reduction*: Direct discounts on the current sales price of goods.
+- *Price Deduction*: Points, coupons, vouchers, etc. can be used to offset the price.
+
+**Compliance Recommendations**
+
+**Prize Sales (including lottery-type and gift-type prize sales)**
+
+*Permitted Practices*
+- Advertising or promotional content must be truthful, legal, clear, and easy to understand; must not use ambiguous or misleading language, text, pictures, or images.
+- Must comply with Nestlé China Advertising Compliance Guidelines and Nestlé’s Marketing to Children Policy.
+- Draft rules for prize sales activities before the activity starts. Rules must comprehensively, clearly, and accurately state details, especially any restrictions on winning, including:
+  - Types of prizes
+  - Participation conditions and methods
+  - Draw time and method
+  - Prize amount or value (for non-cash items, use market price of similar goods)
+  - Prize name, category, quantity, or winning probability
+  - Redemption time, conditions, and method
+  - Prize delivery method
+  - Forfeiture conditions
+  - Organizer and contact information
+- All prize-marked products, prize tickets, and promotional products must be released to the market simultaneously.
+- Activity rules must be easily accessible to consumers (e.g., QR code on packaging).
+- If consumers need to provide personal information, explicit consent must be obtained; personal information processing rules should require consumers to separately check to indicate consent.
+- Establish archives for prize activities, recording activity rules, public information, redemption results, winners, etc., and keep for three years.
+
+*Special Provisions for Gift-type Prize Sales*
+- If the gift is sold at the same business location, indicate the current sales price at that location.
+- If sold elsewhere, indicate the price in one channel and the basis for that price.
+- For prizes without a market price (e.g., signed photos, customized items, samples), indicate "Prize/gift is not for sale, no market price" or similar wording.
+- For promotions over a fixed period, ensure sufficient quantity of promotional products and gifts; do not use "first come, first served, while supplies last."
+- Clearly indicate which products are included in the promotion and which are not.
+- If gifts are not bundled/packaged with promotional products, clearly indicate how to claim the gift.
+- After promotional products or gifts are sold out, promptly inform consumers that the limited promotion has ended.
+
+*Prohibited Practices*
+- Prize sales rules must not be changed arbitrarily, except when beneficial to consumers.
+- Do not use infringing or substandard products, or products officially banned and discontinued, as prizes or gifts.
+- The following deceptive or fraudulent behaviors are prohibited:
+  - Fabricating prizes, prize items, or prize amounts
+  - Only releasing prize items in specific areas within the activity scope
+  - Not releasing or not fully releasing prize-marked products or tickets during the activity period
+  - Releasing products or tickets with different prize amounts or marks at different times
+  - Not redeeming prizes as indicated to consumers
+  - Using improper means to deliberately let internal personnel win
+- Do not state that the organizer has the final interpretation right of the rules.
+- Do not conduct gambling or lottery-type promotional activities.
+- Do not integrate personal information processing rules into prize sales activity rules, or use a single check of the prize sales rules as consent for personal information collection and use. Unless separately consented, information provided for prize sales participation can only be used for that purpose.
+
+*Special Provisions for Lottery-type Prize Sales (Prohibited)*
+- The maximum prize must not exceed RMB 50,000. The following situations are also considered exceeding the maximum:
+  - Multiple winners for the top prize, with any winner’s prize exceeding RMB 50,000
+  - A single ticket or purchase allows two or more chances to win, with the cumulative theoretical maximum prize exceeding RMB 50,000
+  - Prizes in the form of usage rights or services, with market value exceeding RMB 50,000
+  - Prizes in the form of virtual items (e.g., game equipment, accounts) with market value exceeding RMB 50,000
+  - Prizes in the form of discounts, price reductions, or benefits, with value exceeding RMB 50,000
+  - Prizes in the form of lottery tickets or draw tickets, with possible maximum prize exceeding RMB 50,000
+  - Prizes in the form of employment opportunities, consultancy, etc., with maximum reward exceeding RMB 50,000
+  - Other forms of lottery-type prize sales with maximum prize exceeding RMB 50,000
+
+**Price Promotions (including price comparison, price reduction, price deduction)**
+
+*Permitted Practices*
+- General requirements: truthful and accurate, correct labeling, prominent identification.
+- When conducting price comparison or price reduction promotions, the indicated compared price must be truthful, accurate, and based on evidence.
+- When using points, coupons, vouchers, etc. to offset the price, if the deduction calculation method is not indicated, use the marked sales price at the time of redemption as the deduction calculation basis.
+- Properly retain documents supporting pricing decisions, promotional activity rules, etc. for inspection.
+- If the same business location has previously sold at a certain price, indicate the retail price at that store on a specific date, or manufacturer’s suggested retail price (must have evidence and be updated promptly).
+- If no detailed information or explanation of the compared price is provided, the compared price must not be higher than the lowest transaction price at the same business location within seven days before the comparison.
+- If there were no transactions in the previous seven days, the compared price must not be higher than the last transaction price before the comparison.
+- Establish standards and procedures for price labeling, and correct any issues promptly.
+- Must indicate: (i) Goods: name, price, and unit; (ii) Services: service items, content, and price or pricing method.
+- Price: use Arabic numerals; other information: use standard Chinese characters (may be accompanied by foreign language).
+- For different prices for the same item (e.g., same brand or type of goods with different prices due to color, shape, specification, origin, grade, etc.; or different prices for members, non-members, different SKUs, different types, etc.), transaction conditions must be indicated.
+- If prices change, adjust the corresponding price labels promptly.
+- If additional service charges apply when selling goods (delivery, handling, installation, debugging), prices must be indicated. If additional services are not provided by the seller, they must be clearly distinguished or explained.
+- For services consumed before settlement, a settlement list must be provided before settlement.
+
+*Prohibited Practices*
+- Do not sell goods or provide services at a price higher than the marked price, or charge any undisclosed fees.
+- Do not significantly increase the marked price before a discount or reduction without reasonable cause and use it as the calculation basis.
+- Do not use baseless or incomparable prices as the calculation basis for discounts or reductions.
+- Do not fabricate facts, conceal the truth, or use other misleading pricing methods to deceive or induce consumers or other operators.

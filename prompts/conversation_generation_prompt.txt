@@ -14,7 +14,7 @@ Use this guidance to ensure the example conversations reflect appropriate compli
 
 The marketing manager will gradually share details about their promotional campaign across multiple conversation turns. The information should eventually cover:
 
-- Type of promotion
+- Type of promotion - there are 3 categories: LOTTERY, GIFT and PRICE_PROMOTIONS  
 - Products involved
 - How customers can participate
 - Prizes or incentives offered
@@ -76,7 +76,7 @@ Provide your response as JSON with two parts:
     }
   ],
   "context": {
-    "promotion_type": "prize_draw",
+    "promotion_type": "LOTTERY",
     "applicable_products": "summer_collection",
     "prizes": ["1x €500 gift card", "3x €100 gift cards"],
     "duration": {

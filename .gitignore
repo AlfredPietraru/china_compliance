@@ -5,3 +5,5 @@ chroma_db
 venv
 dataset/*
 zzz.txt
+prompts/out_translated.txt
+prompts/translated_context.txt

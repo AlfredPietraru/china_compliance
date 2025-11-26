@@ -86,7 +86,7 @@ class RequirementsGatheringAgent:
         
     def get_system_prompt_info_gathering(self, product_context : Dict[str, Any], context : Dict[str, Any]):
         poml_params = poml.poml(
-        "system_prompt_info_gathering.poml",
+        "prompts/system_prompt_info_gathering.poml",
             context={
                 "product_context": product_context,
                 "promotion_context": context,
@@ -145,7 +145,7 @@ class RequirementsGatheringAgent:
                 'error': error_msg
             }
 
-from utils_requirements_gathering_agent import (
+from requirements_gathering_agent_utils import (
     read_dataset,
     compare_contexts
 )
@@ -188,10 +188,8 @@ async def main():
         llm_response = await requirementsGatheringAgent.gather_context_information(sample_context, context, train_conv)
         groundtruth_context = result.get("context")
         llm_context =  json.loads(llm_response).get("context")
-        print(llm_context)
-        print("\n\n\n")
         _, summary = compare_contexts(groundtruth_context, llm_context)
-        print(summary)
+        print(summary, end="\n\n")
 
 if __name__ == "__main__":
     asyncio.run(main())

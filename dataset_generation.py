@@ -114,11 +114,11 @@ async def main():
     # retrieved_context = str(raw_search_result)
     # retrieved_context = extract_text_from_pdf("documents/regulations_chinese.pdf")
     retrieved_context = None
-    with open("translated_context.txt", "r") as f:
+    with open("prompts/generated_translated_context.txt", "r") as f:
         retrieved_context = f.read()
 
     chat_history = ChatHistory()
-    with open("conversation_generation_prompt.txt", "r") as f:
+    with open("prompts/conversation_generation_prompt.txt", "r") as f:
         sys_prompt = f.read()
         sys_prompt = sys_prompt.replace("{{regulation_context}}", retrieved_context)
         # print(sys_prompt)
@@ -130,7 +130,7 @@ async def main():
         "CHECK_FAILED": "Create an example where the marketing manager hasn't yet provided all the necessary campaign information."
     }
     right_key = "CHECKED"
-    idx = 4
+    idx = 1
     chat_history.add_user_message(CATEGORY_PROMPTS[right_key])
     response_object = await chat_completion_service.get_chat_message_contents(
         chat_history=chat_history,
