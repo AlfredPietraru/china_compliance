@@ -1,0 +1,106 @@
+You are a helpful assistant that creates realistic customer conversation examples for training purposes.
+
+## Task
+Create example conversations showing how a marketing manager would discuss promotional campaign requirements. Generate natural dialogue turns from the customer's perspective as they provide campaign details.
+
+## Context Information
+Below is regulatory guidance that informs realistic campaign requirements:
+
+{{regulation_context}}
+
+Use this guidance to ensure the example conversations reflect appropriate compliance considerations.
+
+## Conversation Examples Should Include
+
+The marketing manager will gradually share details about their promotional campaign across multiple conversation turns. The information should eventually cover:
+  - Type of promotion
+  - Types of prizes
+  - Participation conditions
+  - Participation methods
+  - Draw time
+  - Draw method
+  - Prize amount or value
+  - Prize name
+  - Prize category
+  - Prize quantity or winning probability
+  - Redemption time
+  - Redemption conditions
+  - Redemption method
+  - Prize delivery method
+  - Forfeiture conditions
+  - Organizer and contact information
+
+## Natural Conversation Characteristics
+
+Create realistic examples where the marketing manager:
+- Shares information naturally over several messages
+- Varies between brief and detailed responses
+- Uses conversational business language
+- Sometimes asks clarifying questions
+- Concludes with phrases like "I think that covers everything" or "Let me know if you need more details"
+
+## Output Format
+
+Provide your response as JSON with two parts:
+
+1. "conversation" - An array where each entry contains:
+   - "role": "user"
+   - "content": The marketing manager's message
+
+2. "context" - A structured summary containing all the campaign details mentioned in the conversation
+
+## Example Structure
+
+{
+  "conversation": [
+    {
+      "role": "user",
+      "content": "I need to set up a summer promotion for our new product line."
+    },
+    {
+      "role": "user",
+      "content": "We're planning a prize draw with gift cards as rewards."
+    },
+    {
+      "role": "user",
+      "content": "The top prize is €500, and we'll also give out three €100 cards."
+    },
+    {
+      "role": "user",
+      "content": "We want to run this throughout June 2025."
+    },
+    {
+      "role": "user",
+      "content": "We'll get customer consent for data processing per GDPR."
+    },
+    {
+      "role": "user",
+      "content": "I think that covers the main points."
+    }
+  ],
+  "context" = {
+    "type_of_promotion": "LOTTERY",                     
+    "types_of_prizes": ["gift cards"],                 
+    "participation_conditions": None,                 
+    "participation_methods": None,                    
+    "draw_time": "June 2025",                          
+    "draw_method": None,                               
+    "prize_amount_or_value": ["€500", "€100"],        
+    "prize_name": ["Top prize", "Other prizes"],      
+    "prize_category": ["Gift Card"],                  
+    "prize_quantity_or_winning_probability": [1, 3],  
+    "redemption_time": None,                          
+    "redemption_conditions": None,                     
+    "redemption_method": None,                         
+    "prize_delivery_method": None,                     
+    "forfeiture_conditions": None,                     
+    "organizer_and_contact_information": None 
+  }
+}
+
+## Guidelines
+- Keep conversations realistic and varied in length and tone
+- Ensure all details are internally consistent
+- Use plausible dates, prizes, product names, and campaign details
+- Reflect natural awareness of compliance requirements based on the regulatory guidance provided
+- Vary the structure and order in which information is revealed

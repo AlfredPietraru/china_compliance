@@ -37,53 +37,68 @@
 
 <output-schema parser="json">
   {
-    "type": "object",
-    "properties": {
-      "status": {
-        "type": "string",
-        "enum": ["CONTINUE", "STOP"],
-        "description": "CONTINUE if gathering should continue, STOP if the user indicated they are done"
-      },
-      "question": {
-        "type": "string",
-        "description": "Next question to ask the user if CONTINUE, or confirmation message if STOP"
-      },
-      "context": {
-        "type": "object",
-        "description": "Promotion context object containing all promotion fields",
-        "properties": {
-          "promotion_type": {"type": ["string", "null"]},
-          "applicable_products": {"type": ["string", "null"]},
-          "participation_conditions": {"type": ["string", "null"]},
-          "prizes": {"type": ["array", "null"]},
-          "draw_method": {"type": ["string", "null"]},
-          "draw_time": {"type": ["string", "null"]},
-          "duration": {"type": ["object", "null"]},
-          "promotion_rules_link": {"type": ["string", "null"]},
-          "promotion_qr_code": {"type": ["array", "null"]},
-          "personal_information_consent": {"type": ["string", "null"]},
-          "redemption_method": {"type": ["string", "null"]},
-          "other_restrictions": {"type": ["string", "null"]}
-        },
-        "required": [
-          "promotion_type",
-          "applicable_products",
-          "participation_conditions",
-          "prizes",
-          "draw_method",
-          "draw_time",
-          "duration",
-          "promotion_rules_link",
-          "promotion_qr_code",
-          "personal_information_consent",
-          "redemption_method",
-          "other_restrictions"
-        ]
-      }
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": ["CONTINUE", "STOP"],
+      "description": "CONTINUE if gathering should continue, STOP if the user indicated they are done"
     },
-    "required": ["status", "question", "context"],
-    "additionalProperties": false
-  }
+    "question": {
+      "type": "string",
+      "description": "Next question to ask the user if CONTINUE, or confirmation message if STOP"
+    },
+    "context": {
+      "type": "object",
+      "description": "Promotion context object containing all promotion fields",
+      "properties": {
+        "Type of promotion": {
+          "type": "string",
+          "enum": ["LOTTERY", "GIFT", "PRICE_PROMOTIONS", "NULL"],
+          "description": "The type of promotion"
+        },
+        "Types of prizes": {
+          "type": ["array", "null"],
+          "items": {"type": "string"}
+        },
+        "Participation conditions": {"type": ["string", "null"]},
+        "Participation methods": {"type": ["string", "null"]},
+        "Draw time": {"type": ["string", "null"]},
+        "Draw method": {"type": ["string", "null"]},
+        "Prize amount or value": {"type": ["array", "null"]},
+        "Prize name": {"type": ["array", "null"]},
+        "Prize category": {"type": ["array", "null"]},
+        "Prize quantity or winning probability": {"type": ["array", "null"]},
+        "Redemption time": {"type": ["string", "null"]},
+        "Redemption conditions": {"type": ["string", "null"]},
+        "Redemption method": {"type": ["string", "null"]},
+        "Prize delivery method": {"type": ["string", "null"]},
+        "Forfeiture conditions": {"type": ["string", "null"]},
+        "Organizer and contact information": {"type": ["string", "null"]}
+      },
+      "required": [
+        "Type of promotion",
+        "Types of prizes",
+        "Participation conditions",
+        "Participation methods",
+        "Draw time",
+        "Draw method",
+        "Prize amount or value",
+        "Prize name",
+        "Prize category",
+        "Prize quantity or winning probability",
+        "Redemption time",
+        "Redemption conditions",
+        "Redemption method",
+        "Prize delivery method",
+        "Forfeiture conditions",
+        "Organizer and contact information"
+      ]
+    }
+  },
+  "required": ["status", "question", "context"],
+  "additionalProperties": false
+}
 </output-schema>
 
   </output>

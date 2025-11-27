@@ -118,7 +118,7 @@ async def main():
         retrieved_context = f.read()
 
     chat_history = ChatHistory()
-    with open("prompts/conversation_generation_prompt.txt", "r") as f:
+    with open("prompts/system_conversation_generation_prompt.txt", "r") as f:
         sys_prompt = f.read()
         sys_prompt = sys_prompt.replace("{{regulation_context}}", retrieved_context)
         # print(sys_prompt)
@@ -130,7 +130,7 @@ async def main():
         "CHECK_FAILED": "Create an example where the marketing manager hasn't yet provided all the necessary campaign information."
     }
     right_key = "CHECKED"
-    idx = 1
+    idx = 0
     chat_history.add_user_message(CATEGORY_PROMPTS[right_key])
     response_object = await chat_completion_service.get_chat_message_contents(
         chat_history=chat_history,
@@ -140,7 +140,7 @@ async def main():
     try:
         llm_json = json.loads(llm_response)
         
-        json_text = json.dumps(llm_json.get("conversation"), indent=4, ensure_ascii=False)
+        json_text = json.dumps({"conversation": llm_json.get("conversation")}, indent=4, ensure_ascii=False)
         with open(f"dataset/inputs/inputs{idx:03d}.json", "w", encoding="utf-8") as f:
             f.write(json_text)
         

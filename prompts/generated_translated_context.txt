@@ -31,12 +31,19 @@
 - Advertising or promotional content must be truthful, legal, clear, and easy to understand; must not use ambiguous or misleading language, text, pictures, or images.
 - Must comply with Nestlé China Advertising Compliance Guidelines and Nestlé’s Marketing to Children Policy.
 - Draft rules for prize sales activities before the activity starts. Rules must comprehensively, clearly, and accurately state details, especially any restrictions on winning, including:
+  - Type of promotion - there are 3 categories: LOTTERY, GIFT and PRICE_PROMOTIONS
   - Types of prizes
-  - Participation conditions and methods
-  - Draw time and method
-  - Prize amount or value (for non-cash items, use market price of similar goods)
-  - Prize name, category, quantity, or winning probability
-  - Redemption time, conditions, and method
+  - Participation conditions
+  - Participation methods
+  - Draw time
+  - Draw method
+  - Prize amount or value (for non-cash items or other benefits, calculate based on the market price of similar goods at the time)
+  - Prize name
+  - Prize category
+  - Prize quantity or winning probability
+  - Redemption time
+  - Redemption conditions
+  - Redemption method
   - Prize delivery method
   - Forfeiture conditions
   - Organizer and contact information

@@ -161,26 +161,23 @@ async def main():
         'change_description': """Renovation requrires GTIN changes, however since it is not seen as a new product this will be classified as a Normal project with no GTIN change""",
         'success_criteria': ['Ensure regulatory compliance'],
     }
-    context =  {
-        "promotion_name": None,
-        "promotion_type": None,       
-        "applicable_products": None,  
+    context = {
+        "type_of_promotion": None,            # LOTTERY, GIFT, or PRICE_PROMOTIONS
+        "types_of_prizes": None,
         "participation_conditions": None,
-        "prizes": None,                   
-        "prizez_number_of_winners": None,        
-        "draw_method": None,           
+        "participation_methods": None,
         "draw_time": None,
-        "duration": {
-            "start_date": None,
-            "end_date": None
-        },
-        "promotion_rules_link": None,       
-        "promotion_qr_code": None,     
-        "personal_information_consent": None, 
-        "reference_price": None,       
-        "discount_amount": None,
-        "redemption_method": None,     
-        "other_restrictions": None     
+        "draw_method": None,
+        "prize_amount_or_value": None,        # for non-cash items, based on market price
+        "prize_name": None,
+        "prize_category": None,
+        "prize_quantity_or_winning_probability": None,
+        "redemption_time": None,
+        "redemption_conditions": None,
+        "redemption_method": None,
+        "prize_delivery_method": None,
+        "forfeiture_conditions": None,
+        "organizer_and_contact_information": None
     }
 
     train_data, results = read_dataset()
@@ -188,8 +185,9 @@ async def main():
         llm_response = await requirementsGatheringAgent.gather_context_information(sample_context, context, train_conv)
         groundtruth_context = result.get("context")
         llm_context =  json.loads(llm_response).get("context")
+        print(llm_context)
         _, summary = compare_contexts(groundtruth_context, llm_context)
-        print(summary, end="\n\n")
+        # print(summary, end="\n\n")
 
 if __name__ == "__main__":
     asyncio.run(main())
